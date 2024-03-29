@@ -1,7 +1,7 @@
 # Creata Securety Group for the application load balancer
 resource "aws_security_group" "alb_security_group" {
   name = "alb security group"
-  description = "enable http and web-app access on port 80/3000"
+  description = "enable http and web-app access on port 80"
   vpc_id = var.vpc_id
 
   ingress {
@@ -40,8 +40,8 @@ resource "aws_security_group" "inctance_security_group" {
 
   ingress {
     description = "web-app access"
-    from_port   = 3000
-    to_port     = 3000
+    from_port   = 80
+    to_port     = 80
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }

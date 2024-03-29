@@ -1,10 +1,10 @@
+variable "project_name" {}
 variable "app_image" {}
 variable "app_port" {}
 variable "fargate_cpu" {}
 variable "fargate_memory" {}
 variable "region" {}
 variable "app_count" {}
-variable "ecs_task_execution_role_arn" {}
 variable "alb_target_group_arn" {}
 variable "alb_security_group_id" {}
 variable "private_subnet_az1_id" {}

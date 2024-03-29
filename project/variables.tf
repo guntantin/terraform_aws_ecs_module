@@ -14,61 +14,11 @@ variable "vpc_cidr" {
   }
 }
 
-variable "public_subnet_az1_cidr" {
-  description = "Subnet in AZ a"
-  type        = map(string)
-  default = {
-    "dev"   = "10.0.10.0/24",
-    "stage" = "11.0.10.0/24",
-    "prod"  = "12.0.10.0/24"
-  }
-}
-
-variable "public_subnet_az2_cidr" {
-  description = "Subnet in AZ b"
-  type        = map(string)
-  default = {
-    "dev"   = "10.0.11.0/24",
-    "stage" = "11.0.11.0/24",
-    "prod"  = "12.0.11.0/24"
-  }
-}
-
-variable "private_subnet_az1_cidr" {
-  description = "Subnet in AZ a"
-  type        = map(string)
-  default = {
-    "dev"   = "10.0.12.0/24",
-    "stage" = "11.0.12.0/24",
-    "prod"  = "12.0.12.0/24"
-  }
-}
-
-variable "private_subnet_az2_cidr" {
-  description = "Subnet in AZ b"
-  type        = map(string)
-  default = {
-    "dev"   = "10.0.13.0/24",
-    "stage" = "11.0.13.0/24",
-    "prod"  = "12.0.13.0/24"
-  }
-}
-
 variable "my_public_ip" {
   type        = string
   description = "My public IP address"
   default     = "0.0.0.0/0"
 }
-
-# variable "avalablility_zones" {
-#   description = "Avalablility zones in the Region"
-#   type        = list(string)
-#   default = [
-#     "eu-central-1a",
-#     "eu-central-1b",
-#     "eu-central-1c",
-#   ]
-# }
 
 variable "region" {
   description = "AWS Region"
@@ -121,6 +71,9 @@ variable "app_port" {
   default = "80"
 } 
 
+variable "az_count" {
+  default = "2"
+}
 
 variable "fargate_cpu" {
   default     = "1024"

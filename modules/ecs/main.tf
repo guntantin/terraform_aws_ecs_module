@@ -16,7 +16,7 @@ data "template_file" "webapp" {
 
 resource "aws_ecs_task_definition" "web-def" {
   family                   = "webapp-task"
-  execution_role_arn       = var.ecs_task_execution_role_arn
+  execution_role_arn       = aws_iam_role.ecs_tasks_execution_role.arn
   network_mode             = "awsvpc"
   requires_compatibilities = ["FARGATE"]
   cpu                      = var.fargate_cpu
@@ -46,5 +46,46 @@ resource "aws_ecs_service" "web-service" {
     container_port   = var.app_port
   }
 
-  #depends_on = [var.aws_lb_listener.lb_http, var.aws_iam_role_policy_attachment.ecs_task_execution_role]
+  depends_on = [aws_iam_role_policy_attachment.ecs_tasks_execution_role]
+}
+
+# generate an iam policy document in json format for the ecs task execution
+data "aws_iam_policy_document" "ecs_tasks_execution_role_policy" {
+  statement {
+    actions = ["sts:AssumeRole"]
+
+    principals {
+      type = "Service"
+      identifiers = ["ecs-tasks.amazonaws.com"]
+    }
+  }
+}
+
+# create an iam role
+resource "aws_iam_role" "ecs_tasks_execution_role" {
+  name = "${var.project_name}-ecs-task-execution-role"
+  assume_role_policy = data.aws_iam_policy_document.ecs_tasks_execution_role_policy.json
+}
+
+# attach ecs taks execution policy to the iam role
+resource "aws_iam_role_policy_attachment" "ecs_tasks_execution_role" {
+  role = aws_iam_role.ecs_tasks_execution_role.name
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
+}
+
+
+# logs.tf
+# Set up CloudWatch group and log stream and retain logs for 30 days
+resource "aws_cloudwatch_log_group" "webapp_log_group" {
+  name              = "/ecs/webapp"
+  retention_in_days = 30
+
+  tags = {
+    Name = "cw-log-group"
+  }
+}
+
+resource "aws_cloudwatch_log_stream" "myapp_log_stream" {
+  name           = "log-stream"
+  log_group_name = aws_cloudwatch_log_group.webapp_log_group.name
 }

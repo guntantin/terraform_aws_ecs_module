@@ -5,7 +5,7 @@ resource "aws_lb" "application_lb" {
   ip_address_type    = "ipv4"
   load_balancer_type = "application"
   security_groups    = [var.alb_security_group_id]
-  subnets            = [var.public_subnet_az1_id, var.public_subnet_az2_id]
+  subnets            = [var.public_subnet_id[0], var.public_subnet_id[1]]
 
   tags = {
     Name = "${terraform.workspace}-${var.project_name}-alb"
@@ -15,7 +15,7 @@ resource "aws_lb" "application_lb" {
 # Create alb target group
 resource "aws_lb_target_group" "target-group" {
   name        = "${terraform.workspace}-${var.project_name}-tg"
-  port        = 3000
+  port        = 80
   protocol    = "HTTP"
   target_type = "ip"
   vpc_id      = var.vpc_id
