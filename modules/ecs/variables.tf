@@ -7,5 +7,4 @@ variable "region" {}
 variable "app_count" {}
 variable "alb_target_group_arn" {}
 variable "alb_security_group_id" {}
-variable "private_subnet_az1_id" {}
-variable "private_subnet_az2_id" {}
+variable "private_subnet_id" {}
