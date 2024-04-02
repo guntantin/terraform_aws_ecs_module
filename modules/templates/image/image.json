@@ -2,8 +2,8 @@
     {
       "name": "webapp",
       "image": "${app_image}",
-      "cpu": 1024,
-      "memory": 2048,
+      "cpu": "${fargate_cpu}",
+      "memory": "${fargate_memory}",
       "networkMode": "awsvpc",
       "logConfiguration": {
           "logDriver": "awslogs",
